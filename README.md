@@ -1,5 +1,5 @@
 # machine-learning-models-for-Fraud-detection
-Contents
+# Contents
 
 Exploratory Data Analysis (EDA)
 
@@ -25,7 +25,7 @@ CatBoostClassifier with scale_pos_weight
 
 Simple hybrid ensemble by averaging RF & XGB probabilities
 
-Evaluation
+# Evaluation
 
 Train/validation splits with train_test_split (stratified)
 
@@ -39,7 +39,7 @@ ROC and Precision–Recall curves (per-model and comparison)
 
 Probability comparison scatterplot (RF vs XGB)
 
-Data
+# Data
 
 The notebook expects the Kaggle-style credit card fraud dataset schema:
 
