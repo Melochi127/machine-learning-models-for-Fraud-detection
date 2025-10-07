@@ -1,0 +1,121 @@
+## What the Notebook Does (Step-by-Step)
+
+Imports & Setup
+
+Loads core libraries, sets seaborn style.
+
+Load Data
+
+Reads CSV into a pandas DataFrame.
+
+EDA
+
+df.head(), summary statistics, histograms, class imbalance check.
+
+Plots: Amount boxplot, Time histogram, full dataset hist grid.
+
+Split
+
+train_test_split(..., stratify=y, test_size=0.3, random_state=42).
+
+Pipelines
+
+RF pipeline: StandardScaler → SMOTE → RandomForestClassifier.
+
+XGB pipeline: StandardScaler → SMOTE → XGBClassifier (with sensible defaults; separate example shows scale_pos_weight).
+
+CatBoost pipeline: SMOTE → CatBoostClassifier (with scale_pos_weight to reflect imbalance).
+
+Training & CV
+
+Fits pipelines on X_train, y_train.
+
+5-fold stratified CV using ROC-AUC.
+
+Evaluation
+
+On X_test: Accuracy, Recall, Precision, F1, ROC-AUC.
+
+Confusion matrix & classification report.
+
+ROC and PR curves for RF, XGB, CatBoost.
+
+Hybrid (Ensemble)
+
+Averages RF & XGB probabilities → hybrid probability and class prediction.
+
+Evaluates hybrid metrics and plots hybrid ROC.
+
+Model Comparison Visuals
+
+Combined figure with ROC and PR for RF/XGB/CatBoost.
+
+Probability scatter (RF vs XGB) to inspect agreement.
+
+Key Design Choices
+
+Imbalance handling
+
+SMOTE inside the pipeline so oversampling happens only on the training folds (prevents leakage).
+
+Class weighting / scale_pos_weight for gradient-boosting style models.
+
+Pipelines
+
+Use imblearn.pipeline.Pipeline so that scaling, SMOTE, and the classifier are cross-validated together.
+
+Metrics
+
+ROC-AUC reported; for heavy imbalance, also inspect PR curves and Recall at low FPR (add if needed).
+
+Reproducibility
+
+Fixed random_state=42 where applicable.
+
+Customization
+
+Change test split size in the split cell.
+
+Tune models
+
+XGBoost: n_estimators, max_depth, learning_rate, subsample, colsample_bytree, reg_alpha, reg_lambda, scale_pos_weight.
+
+Random Forest: n_estimators, max_depth, min_samples_split, class_weight.
+
+CatBoost: iterations, depth, learning_rate, l2_leaf_reg, scale_pos_weight.
+
+Thresholding
+
+Replace the fixed 0.5 decision threshold with a tuned threshold (e.g., maximize F1/Recall or set by cost).
+
+Expected Outputs
+
+Printed metrics for RF, XGB, CatBoost, and Hybrid on the test set.
+
+Plots
+
+Amount boxplot
+
+Time histogram
+
+Full histogram grid
+
+ROC curves (per model + comparison)
+
+Precision–Recall curves (per model + comparison)
+
+Hybrid ROC curve
+
+RF vs XGB probability scatterplot
+
+Exact numbers depend on your dataset split and hyperparameters.
+
+Troubleshooting
+
+FileNotFoundError: Fix the CSV path in the “Load Data” cell.
+
+Package errors: Ensure imbalanced-learn, xgboost, and catboost are installed (see requirements).
+
+Long training time: Reduce n_estimators / iterations or subsample for experiments.
+
+Memory with SMOTE: Start with a smaller sampling_strategy (e.g., 0.3) or try SMOTEENN/SMOTETomek.
